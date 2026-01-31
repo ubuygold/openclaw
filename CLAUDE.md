@@ -65,6 +65,18 @@ Complex keys (`presets`, `mappings`, `transformsDir`) are JSON-only — not expo
 
 Docs: https://docs.openclaw.ai/automation/webhook
 
+### Browser env vars (6 total)
+
+Gate: `BROWSER_CDP_URL` (required to activate).
+
+Strings: `BROWSER_CDP_URL`, `BROWSER_SNAPSHOT_MODE`, `BROWSER_DEFAULT_PROFILE`
+Booleans: `BROWSER_EVALUATE_ENABLED`
+Numbers: `BROWSER_REMOTE_TIMEOUT_MS`, `BROWSER_REMOTE_HANDSHAKE_TIMEOUT_MS`
+
+Merge behavior: same as Telegram/Discord/Slack (merge, custom JSON keys preserved).
+
+Docs: https://docs.openclaw.ai/tools/browser
+
 ### Groups/Guilds — JSON config only (all channels)
 
 `channels.<name>.groups` (or `guilds` for Discord) is **never** exposed as an env var, for any channel. Group/guild allowlists with per-group mention gating are too complex for flat env vars. When adding a new channel, keep `groups`/`guilds` in `my-openclaw.json` only.

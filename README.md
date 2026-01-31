@@ -142,6 +142,30 @@ If a provider env var is removed, that provider section is cleaned from `opencla
 
 When hooks are enabled and `AUTH_PASSWORD` is set, the hooks path automatically bypasses HTTP basic auth. Openclaw validates requests using the hook token instead. Docs: https://docs.openclaw.ai/automation/webhook
 
+### Browser tool (remote CDP sidecar, optional)
+
+| Variable | Default | Description |
+|---|---|---|
+| `BROWSER_CDP_URL` | | Remote CDP URL pointing to a browser sidecar (e.g. `http://browser:9222`). Required to activate browser tool. |
+| `BROWSER_EVALUATE_ENABLED` | `false` | Allow JavaScript evaluation in page context via browser actions. |
+| `BROWSER_SNAPSHOT_MODE` | | Default snapshot mode (e.g. `efficient`). |
+| `BROWSER_REMOTE_TIMEOUT_MS` | `1500` | HTTP timeout in ms for remote CDP connection. |
+| `BROWSER_REMOTE_HANDSHAKE_TIMEOUT_MS` | `3000` | WebSocket handshake timeout in ms for remote CDP. |
+| `BROWSER_DEFAULT_PROFILE` | | Override the default browser profile name. |
+
+Requires a separate browser container connected via Docker networking. Recommended: `kasmweb/chrome` (full Chrome desktop via noVNC on `:6901`, CDP on `:9222`). Docs: https://docs.openclaw.ai/tools/browser
+
+#### Browser login (VNC sidecar)
+
+For sites requiring authentication, use `kasmweb/chrome` so you can log in manually via a web-based desktop. Openclaw reuses the authenticated session via CDP.
+
+1. Open `https://<host>:6901` — full Chrome desktop via noVNC
+2. Navigate to the target site, log in manually (handles captchas, 2FA, OAuth)
+3. Sessions persist in a mounted volume across restarts
+4. Set `BROWSER_CDP_URL=http://browser:9222` — openclaw connects via CDP
+
+Mount a persistent volume at the sidecar's profile directory (`/home/kasm-user`) so cookies and sessions survive container restarts. The sidecar may need `CHROME_ARGS=--remote-debugging-port=9222 --remote-debugging-address=0.0.0.0` to expose CDP. Docs: https://docs.openclaw.ai/tools/browser-login
+
 ### Channels (optional)
 
 | Variable | Default | Description |

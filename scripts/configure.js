@@ -572,6 +572,29 @@ if (process.env.HOOKS_ENABLED === "true" || process.env.HOOKS_ENABLED === "1") {
   console.log("[configure] hooks configured (from custom JSON)");
 }
 
+// ── Browser tool (remote CDP) ────────────────────────────────────────────────
+if (process.env.BROWSER_CDP_URL) {
+  console.log("[configure] configuring browser tool (remote CDP)");
+  ensure(config, "browser");
+  const br = config.browser;
+  br.cdpUrl = process.env.BROWSER_CDP_URL;
+
+  if (process.env.BROWSER_EVALUATE_ENABLED !== undefined)
+    br.evaluateEnabled = process.env.BROWSER_EVALUATE_ENABLED === "true";
+  if (process.env.BROWSER_SNAPSHOT_MODE) {
+    ensure(br, "snapshotDefaults");
+    br.snapshotDefaults.mode = process.env.BROWSER_SNAPSHOT_MODE;
+  }
+  if (process.env.BROWSER_REMOTE_TIMEOUT_MS)
+    br.remoteCdpTimeoutMs = parseInt(process.env.BROWSER_REMOTE_TIMEOUT_MS, 10);
+  if (process.env.BROWSER_REMOTE_HANDSHAKE_TIMEOUT_MS)
+    br.remoteCdpHandshakeTimeoutMs = parseInt(process.env.BROWSER_REMOTE_HANDSHAKE_TIMEOUT_MS, 10);
+  if (process.env.BROWSER_DEFAULT_PROFILE)
+    br.defaultProfile = process.env.BROWSER_DEFAULT_PROFILE;
+} else if (config.browser) {
+  console.log("[configure] browser configured (from custom JSON)");
+}
+
 // ── Validate: at least one provider API key env var must be set ──────────────
 // All providers (built-in and custom) read API keys from env vars, not from JSON.
 const hasProvider =
