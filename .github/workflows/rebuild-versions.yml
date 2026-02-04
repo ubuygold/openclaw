@@ -78,6 +78,9 @@ jobs:
       fail-fast: false
       matrix:
         version: ${{ fromJson(needs.check-base.outputs.missing_versions) }}
+        arch:
+          - amd64
+          - arm64
         include:
           - arch: amd64
             runner: ubuntu-24.04
@@ -174,6 +177,9 @@ jobs:
       fail-fast: false
       matrix:
         version: ${{ fromJson(needs.get-versions.outputs.versions) }}
+        arch:
+          - amd64
+          - arm64
         include:
           - arch: amd64
             runner: ubuntu-24.04
