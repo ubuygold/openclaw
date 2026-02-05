@@ -7,7 +7,7 @@
 ```bash
 docker run -d \
   --name openclaw \
-  -p 8080:8080 \
+  -p 18080:18080 \
   -e ANTHROPIC_API_KEY=sk-ant-... \
   -e AUTH_PASSWORD=changeme \
   -e OPENCLAW_GATEWAY_TOKEN=my-secret-token \
@@ -30,8 +30,8 @@ docker compose up -d
 
 **After starting:**
 
-1. **Openclaw UI** — `http://localhost:8080` (login: `admin` / your `AUTH_PASSWORD`)
-2. **Browser desktop** — `http://localhost:8080/browser/` (login: `admin` / your browser `PASSWORD`) — use this to log into sites that need auth (OAuth, 2FA, captchas). Openclaw reuses the session via CDP.
+1. **Openclaw UI** — `http://localhost:18080` (login: `admin` / your `AUTH_PASSWORD`)
+2. **Browser desktop** — `http://localhost:18080/browser/` (login: `admin` / your browser `PASSWORD`) — use this to log into sites that need auth (OAuth, 2FA, captchas). Openclaw reuses the session via CDP.
 
 ## Architecture
 
@@ -39,7 +39,7 @@ docker compose up -d
 ┌─────────────────────────────────────────────┐
 │  Docker container (coollabsio/openclaw)     │
 │                                             │
-│  ┌──────────┐  :8080   ┌────────────────┐  │
+│  ┌──────────┐  :18080  ┌────────────────┐  │
 │  │  nginx    │ ──────→  │  openclaw      │  │
 │  │  (basic   │  proxy   │  gateway       │  │
 │  │   auth)   │  :18789  │  :18789        │  │
@@ -66,7 +66,7 @@ Dockerfile                          — FROM base, add nginx + config scripts + 
 scripts/configure.js                — reads env vars, writes/patches openclaw.json
 scripts/entrypoint.sh               — container entrypoint: configure → nginx → gateway
 scripts/smoke.js                    — smoke test (openclaw --version)
-nginx/default.conf                  — reverse proxy :8080 → :18789, optional basic auth
+nginx/default.conf                  — reverse proxy :18080 → :18789, optional basic auth
 .dockerignore                       — standard ignores
 .env.example                        — env var reference
 ```
@@ -315,7 +315,7 @@ If a channel env var is removed, that channel is cleaned from config on next sta
 
 | Variable | Default | Description |
 |---|---|---|
-| `PORT` | `8080` | External port nginx listens on. |
+| `PORT` | `18080` | External port nginx listens on. |
 
 
 ### Coolify-specific (auto-set by Coolify)

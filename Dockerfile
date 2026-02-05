@@ -16,10 +16,10 @@ RUN rm -f /etc/nginx/sites-enabled/default
 COPY scripts/ /app/scripts/
 RUN chmod +x /app/scripts/*.sh
 
-ENV PORT=8080
-EXPOSE 8080
+ENV PORT=18080
+EXPOSE 18080
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -f http://localhost:8080/healthz || exit 1
+  CMD curl -f http://localhost:${PORT}/healthz || exit 1
 
 ENTRYPOINT ["/app/scripts/entrypoint.sh"]

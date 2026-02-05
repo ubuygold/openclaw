@@ -2,7 +2,7 @@ services:
   openclaw:
     image: coollabsio/openclaw:latest
     ports:
-      - "18080:8080"
+      - "18080:18080"
     environment:
       # Provider (at least one required)
       - ANTHROPIC_API_KEY=sk-ant-...

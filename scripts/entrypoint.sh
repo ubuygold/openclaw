@@ -170,7 +170,7 @@ map "\$ocw_has_token:\$args" \$ocw_proxy_args {
 }
 
 server {
-    listen 8080 default_server;
+    listen ${PORT:-18080} default_server;
     server_name _;
 
     location = /healthz {
@@ -261,7 +261,7 @@ server {
 NGINXEOF
 
 # ── Start nginx ──────────────────────────────────────────────────────────────
-echo "[entrypoint] starting nginx on port ${PORT:-8080}..."
+echo "[entrypoint] starting nginx on port ${PORT:-18080}..."
 nginx
 
 # ── Clean up stale lock files ────────────────────────────────────────────────
